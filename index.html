@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+  <title>reveal.js</title>
+
+  <link rel="stylesheet" href="main/reset.css" />
+  <link rel="stylesheet" href="main/reveal.css" />
+  <link rel="stylesheet" href="main/theme/solarized.css" />
+
+  <link rel="stylesheet" href="plugin/highlight/monokai.css" />
+</head>
+
+<body>
+  <div class="reveal">
+    <div class="slides">
+      <section>
+        <h1>SOLID</h1>
+        <aside class="notes">
+          Hi, my name is Alexandra. Today I want to talk about SOLID design principles.
+        </aside>
+      </section>
+      <section>
+        <section>
+          <h2>HISTORY</h2>
+        </section>
+        <section>
+          <h3>Robert C. Martin</h3>
+          <h4>(Uncle Bob)</h4>
+          <img src="./assets/bob.webp" alt="bob" height="500px" />
+          <aside class="notes">
+            The SOLID principles were introduced by Robert C. Martin in his 2000 paper “Design
+            Principles and Design Patterns.” These concepts were later built upon by Michael
+            Feathers, who introduced us to the SOLID acronym. And in the last 20 years, these five
+            principles have revolutionized the world of object-oriented programming, changing the
+            way that we write software.
+          </aside>
+        </section>
+      </section>
+      <section>
+        <section>
+          <h2>Single-responsibility principle</h2>
+          <aside class="notes">
+            So let's get started. The first letter in this abbreviation means the principle of a
+            single responsibility.
+          </aside>
+        </section>
+        <section>
+          <pre><code class="language-javascript">//bad practice
+
+			                        class User {
+			                        	constructor(name) {
+			                        	  this.name = name
+			                          };
+
+			                        	saveToDatabase() {}
+			                        	sendEmail() {}
+			                        	};
+				</code></pre>
+          </code></pre>
+          <pre><code class="language-javascript">//good practice
+
+				                      class User {
+				                      	constructor(name) {
+				                      		this.name = name;
+				                      	};
+				                      	saveToDatabase() {}
+				                      };
+
+				                      class EmailService {
+				                      	sendEmail() {}
+				                      };
+				</code></pre>
+          <aside class="notes">
+            A class should have only one reason to change. In other words, a class should have
+            only one primary responsibility.
+
+            Pros are
+            - Improved maintainability
+            - Better separation of concerns
+
+            Cons of the principle:
+            - Increased number of classes
+          </aside>
+        </section>
+      </section>
+      <section>
+        <section>
+          <h2>Open-closed principle</h2>
+          <aside class="notes">
+            Now let's talk about the second principle.
+            Software entities (classes, modules, functions, etc.) should be open for extension, but closed for
+            modification. Your code so that you will be able to add new functionality without changing the existing
+            code.
+            That prevents situations
+            in which a change to one of your classes also requires you to adapt all depending classes.
+          </aside>
+        </section>
+        <section>
+          <pre><code class="language-javascript">//bad practice
+
+                            class Shape {
+                              constructor(type) {
+                                this.type = type;
+                              }
+                              getArea() {
+                                if (this.type === 'circle') {}
+                                else if (this.type === 'rectangle') {}
+                                else if (this.type === 'triangle') {}
+                              }
+                            }
+                </code></pre>
+          <pre><code class="language-javascript">//good practice
+
+                            class Shape {
+                              getArea() {
+                                throw new Error('Not implemented');
+                              }
+                            }
+
+                            class Circle extends Shape {
+                              getArea() {}
+                            }
+
+                            class Rectangle extends Shape {
+                              getArea() {}
+                            }
+
+                           class Triangle extends Shape {
+                             getArea() {}
+                           }
+                </code></pre>
+          <aside class="notes">
+            Pros:
+            - Easy to extend
+            - Reduces the risk of introducing bugs
+
+            Cons:
+            - More complex: The codebase can become more complex due to the introduction of multiple classes and
+            abstractions.
+          </aside>
+        </section>
+      </section>
+      <section>
+        <section>
+          <h2>Liskov substitution principle</h2>
+          <aside class="notes">
+            Now let's talk about the third principle.
+          </aside>
+        </section>
+        <section>
+          <pre><code class="language-javascript">//bad practice
+
+                      class Rectangle {
+                          constructor(width, height) {
+                            this.width = width;
+                            this.height = height;
+                            }
+                          setWidth(width) {
+                            this.width = width;
+                            }
+                          setHeight(height) {
+                            this.height = height;
+                            }
+                          getArea() {
+                            return this.width * this.height;
+                            }
+                          }
+
+                        class Square extends Rectangle {
+                            setWidth(width) {
+                              this.width = width;
+                              this.height = width;
+                              }
+                            setHeight(height) {
+                              this.width = height;
+                              this.height = height;
+                              }
+                            }
+                            </code></pre>
+          <aside class="notes">
+            The Liskov substitution principle (LSP) is a particular definition of a subtyping relation, called strong
+            behavioral subtyping, that was initially introduced by Barbara Liskov in a 1987 conference keynote address
+            titled Data
+            abstraction and hierarchy. It is based on the concept of "substitutability" - a principle in object-oriented
+            programming
+            stating that an object (such as a class) may be replaced by a sub-object (such as a class that extends the
+            first
+            class) without breaking the program. It is a semantic rather than merely syntactic relation, because it
+            intends to
+            guarantee semantic interoperability of types in a hierarchy, object types in particular.
+          </aside>
+        </section>
+        <section>
+          <pre><code class="language-javascript">//good practice
+                              class Shape {
+                                getArea() {
+                                  throw new Error("Method not implemented");
+                                }
+                              }
+
+                              class Rectangle extends Shape {
+                                constructor(width, height) {
+                                  super();
+                                  this.width = width;
+                                  this.height = height;
+                                }
+
+                                setWidth(width) {
+                                  this.width = width;
+                                }
+
+                                setHeight(height) {
+                                  this.height = height;
+                                }
+
+                                getArea() {
+                                  return this.width * this.height;
+                                }
+                              }
+
+                              class Square extends Shape {
+                                constructor(side) {
+                                  super();
+                                  this.side = side;
+                                }
+
+                                setSide(side) {
+                                  this.side = side;
+                                }
+
+                                getArea() {
+                                 return this.side * this.side;
+                                }
+                              }
+                            </code></pre>
+          <aside class="notes">
+Pros:
+Code Reusability
+Abstraction
+Simplified Testing
+
+Cons:
+Complexity
+Overgeneralization
+Runtime Errors
+          </aside>
+        </section>
+      </section>
+      <section>
+        <section>
+          <h2>Interface segregation principle</h2>
+          <aside class="notes">
+            Now let's talk about the fourth principle.
+          </aside>
+        </section>
+        <section>
+          <pre><code class="language-javascript">//bad practice
+
+                        class Worker {
+                          constructor(name) {
+                          this.name = name;
+                          }
+                          work() {}
+                          eat() {}
+                        }
+
+                        class Programmer extends Worker {
+                          code() {}
+                        }
+
+                        class Chef extends Worker {
+                          cook() {}
+                        }
+    </code></pre>
+              <pre><code class="language-javascript">//good practice
+
+                      class Worker {
+                        constructor(name) {
+                        this.name = name;
+                        }
+
+                        work() {}
+                      }
+
+                        class Programmer extends Worker {
+                        code() {}
+                      }
+
+                      class Chef extends Worker {
+                        cook() {}
+                      }
+                        </code></pre>
+          <aside class="notes">
+            The Interface Segregation Principle states that a client should never be forced to implement an interface that it does
+            not use, or clients shouldn't be forced to depend on methods they do not use.
+            The objective behind this principle is to remove unnecessary
+            code from Classes in order to reduce unexpected bugs when the Class does not have the ability to perform an action. We
+            split actions into smaller sets so a Class only executes the actions it requires.
+                        Pros:
+                        - Cleaner interfaces: Clients only need to implement the specific methods they use, leading to cleaner and
+                        more focused
+                        interfaces.
+                        - Avoids interface pollution: Prevents the introduction of unnecessary methods in classes that do not use
+                        them.
+
+                        Cons:
+                        - More effort in interface design: Implementing multiple smaller interfaces may require more effort in
+                        designing and
+                        maintaining the codebase.
+          </aside>
+        </section>
+      </section>
+      <section>
+        <section>
+          <h2>Dependency Inversion Principle</h2>
+          <aside class="notes">
+            Now let's talk about the fifth principle.
+          </aside>
+        </section>
+        <section>
+          <pre><code class="language-javascript">//bad practice
+
+                        class OrderService {
+                          constructor() {
+                            this.orderRepository = new OrderRepository();
+                          }
+
+                          createOrder(orderData) {
+                            this.orderRepository.save(orderData);
+                          }
+                        }
+          </code></pre>
+          <pre><code class="language-javascript">//good practice
+
+                        class OrderService {
+                          constructor(orderRepository) {
+                            this.orderRepository = orderRepository;
+                          }
+
+                          createOrder(orderData) {
+                            this.orderRepository.save(orderData);
+                          }
+                        }
+
+                        const orderRepository = new OrderRepository();
+                        const orderService = new OrderService(orderRepository);
+      				</code></pre>
+          <aside class="notes">
+            High-level modules should not depend on low-level modules. Both should depend on abstractions. Abstractions should not
+            depend on details; details should depend on abstractions.
+            Pros:
+            - Decoupling: High-level modules and low-level modules become decoupled from each other, allowing for easier maintenance
+            and modification.
+            - Flexibility: Dependency inversion allows for easier swapping of dependencies, promoting modularity and flexibility in
+            the codebase.
+
+            Cons:
+            - Initial complexity: Implementing dependency inversion may require more upfront design and setup, which can increase
+            the complexity of the codebase.
+            - Indirectness: Introducing abstractions can sometimes make the code less straightforward and add an additional layer of
+            indirection.
+
+          </aside>
+        </section>
+      </section>
+      <section>
+        <h2>Thank's for watching!!!</h2>
+      </section>
+    </div>
+  </div>
+
+  <script src="main/reveal.js"></script>
+  <script src="plugin/notes/notes.js"></script>
+  <script src="plugin/markdown/markdown.js"></script>
+  <script src="plugin/highlight/highlight.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+    })
+  </script>
+</body>
+
+</html>
